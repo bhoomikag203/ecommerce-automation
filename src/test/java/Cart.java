@@ -21,7 +21,8 @@ public class Cart extends Base {
         AndroidDriver<AndroidElement> driver = capabilities("Emulator");
         driver.manage().timeouts().implicitlyWait(120, TimeUnit.SECONDS);
         fillForm(driver);
-//        addToCart(driver);
+        checkIfTheCartIsEmpty(driver);
+        addToCart(driver);
         validateTotalAmount(driver);
         tapCheckBox(driver);
         viewTermsAndConditions(driver);
@@ -117,6 +118,13 @@ public class Cart extends Base {
         double amountValue = Double.parseDouble(amount);
         System.out.println(s + amountValue);
         return amountValue;
+    }
+
+    private static void checkIfTheCartIsEmpty(AndroidDriver<AndroidElement> driver) {
+        driver.findElement(By.id("com.androidsample.generalstore:id/appbar_btn_cart")).click();
+        String toastMessage = driver.findElement(By.xpath("//android.widget.Toast[1]")).getAttribute("name");
+        System.out.println(toastMessage);
+        Assert.assertEquals(toastMessage, "Please add some product at first");
     }
 
 
